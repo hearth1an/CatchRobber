@@ -1,31 +1,33 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class Door : MonoBehaviour
-{
-    [SerializeField] private Robber _robber;
-    [SerializeField] private Alarm _alarm;
-
+{ 
+    private WaitForSeconds _rate;
     private int _checkRate = 2;
-
     private bool _hasEntered = false;
 
+    public event Action<Door> Entered;
+    public event Action<Door> CameOut;
+
+    private void Awake()
+    {
+        _rate = new WaitForSeconds(_checkRate);
+    }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject == _robber.gameObject)
+        if (_hasEntered == false)
         {
-            if (_hasEntered == false)
-            {
-                _alarm.TriggerAlarm();
-                _hasEntered = true;
-                StartCoroutine(Await());
-            }
-            else
-            {                
-                _alarm.StopAlarm();
-                _hasEntered = false;
-                StartCoroutine(Await());
-            }
+            Entered?.Invoke(this);
+            _hasEntered = true;
+            StartCoroutine(Await());
+        }
+        else
+        {
+            CameOut?.Invoke(this);
+            _hasEntered = false;
+            StartCoroutine(Await());
         }
     }
 
@@ -33,7 +35,7 @@ public class Door : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(_checkRate);
+            yield return _rate;
         }
     }
 }

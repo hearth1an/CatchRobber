@@ -1,52 +1,60 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class Alarm : MonoBehaviour
 {
     [SerializeField] private Light _lights;
+    [SerializeField] private Door _door;
 
     private float _soundValueRate = 0.1f;
     private float _soundValueSmoothness = 0.03f;
 
     private Coroutine _soundFadeIn;
-    private Coroutine _soundFadeOut;    
+    private Coroutine _soundFadeOut;
 
-    private AudioSource _audioSource => GetComponent<AudioSource>();
-    private Animator _lightsAnim => _lights.gameObject.GetComponent<Animator>();    
+    private WaitForSeconds _rate;
+
+    private AudioSource _audioSource => GetComponent<AudioSource>();   
 
     private void Awake()
     {   
+        _rate = new WaitForSeconds(_soundValueRate);
+
         ToggleLights(false);
+        _door.Entered += TriggerAlarm;
+        _door.CameOut += StopAlarm;
     }
 
-    public void TriggerAlarm()
+    public void TriggerAlarm(Door door)
     {
         ToggleLights(true);
 
         if (_soundFadeOut != null)
-        {
             StopCoroutine(_soundFadeOut);
-        }
 
         _soundFadeIn = StartCoroutine(FadeInSound());
     }
 
-    public void StopAlarm()
+    public void StopAlarm(Door door)
     {
         ToggleLights(false);
 
         if (_soundFadeIn != null)
-        {
             StopCoroutine(_soundFadeIn);
-        }
 
         _soundFadeOut = StartCoroutine(FadeOutSound());
     }
 
     private void ToggleLights(bool value)
     {
-        _lights.enabled = value;
-        _lightsAnim.enabled = value;
+        var lightsAnim = _lights.GetComponent<Animator>();
+
+        if (_lights != null)
+            _lights.enabled = value;
+        
+        if(lightsAnim != null)
+            lightsAnim.enabled = value;
     }
 
     private IEnumerator FadeInSound()
@@ -60,7 +68,7 @@ public class Alarm : MonoBehaviour
         while (_audioSource.volume < maxVolume)
         {
             _audioSource.volume += _soundValueSmoothness;
-            yield return new WaitForSeconds(_soundValueRate);
+            yield return _rate;
         }
     }    
 
@@ -71,7 +79,7 @@ public class Alarm : MonoBehaviour
         while (_audioSource.volume > minVolume)
         {
             _audioSource.volume -= _soundValueSmoothness;
-            yield return new WaitForSeconds(_soundValueRate);
+            yield return _rate;
         }
     }        
 }

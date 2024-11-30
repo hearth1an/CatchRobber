@@ -9,6 +9,7 @@ public class Robber : MonoBehaviour
     private int _currentPointIndex = 0;
     private int _firstRouteIndex = 0;
     private int _direction = 1;
+
     public Vector3 Position => transform.position;
 
     private void Awake()

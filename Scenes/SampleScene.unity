@@ -338,7 +338,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204115312}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.18, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -378,7 +378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1346130795143421835, guid: 4a31be09ff2109d428a23d48567e18a8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1346130795143421835, guid: 4a31be09ff2109d428a23d48567e18a8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -629,6 +629,7 @@ GameObject:
   - component: {fileID: 794931019}
   - component: {fileID: 794931017}
   - component: {fileID: 794931022}
+  - component: {fileID: 794931023}
   m_Layer: 0
   m_Name: Alarm
   m_TagString: Untagged
@@ -647,8 +648,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 7bc53c1f616305a4286a5ac00808bea0, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -810,7 +811,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cad09e66c9a395a4cbcb85a79d1088d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lights: {fileID: 0}
+  _lights: {fileID: 1942364784}
+  _door: {fileID: 1312826677}
+--- !u!95 &794931023
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794931016}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1115,7 +1138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1346130795143421835, guid: 4a31be09ff2109d428a23d48567e18a8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.31
+      value: -4.23
       objectReference: {fileID: 0}
     - target: {fileID: 1346130795143421835, guid: 4a31be09ff2109d428a23d48567e18a8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1305,8 +1328,8 @@ HingeJoint:
   serializedVersion: 2
   m_UseSpring: 1
   m_Spring:
-    spring: 2
-    damper: 0.5
+    spring: 10
+    damper: 10
     targetPosition: 0
   m_UseMotor: 0
   m_Motor:
@@ -1340,8 +1363,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c0a83341f0f0834bb50eebe4844138f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _robber: {fileID: 1109000612}
-  _alarm: {fileID: 794931022}
 --- !u!1 &1473262295
 GameObject:
   m_ObjectHideFlags: 0
@@ -1675,12 +1696,12 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1942364782}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_Intensity: 0
+  m_Intensity: 3
   m_Range: 36.06
   m_SpotAngle: 140
   m_InnerSpotAngle: 21.80208
@@ -1740,7 +1761,7 @@ Animator:
   m_GameObject: {fileID: 1942364782}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 476fbd3219d26334480b7d61f874addd, type: 2}
+  m_Controller: {fileID: 9100000, guid: bd6a13d353676de4daf5596564e89735, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1878,7 +1899,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1346130795143421835, guid: 4a31be09ff2109d428a23d48567e18a8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.28
+      value: -0.83
       objectReference: {fileID: 0}
     - target: {fileID: 1346130795143421835, guid: 4a31be09ff2109d428a23d48567e18a8, type: 3}
       propertyPath: m_LocalRotation.w
