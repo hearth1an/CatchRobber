@@ -10,51 +10,57 @@ public class Alarm : MonoBehaviour
     private float _soundValueRate = 0.1f;
     private float _soundValueSmoothness = 0.03f;
 
-    private Coroutine _soundFadeIn;
-    private Coroutine _soundFadeOut;
+    private Coroutine _soundCoroutine;
 
     private WaitForSeconds _rate;
-
-    private AudioSource _audioSource => GetComponent<AudioSource>();   
+    private AudioSource _audioSource;
+    private Animator _lightsAnimator;
 
     private void Awake()
     {   
         _rate = new WaitForSeconds(_soundValueRate);
+        _audioSource = GetComponent<AudioSource>();
+        _lightsAnimator = _lights.GetComponent<Animator>();
 
         ToggleLights(false);
-        _door.Entered += TriggerAlarm;
-        _door.CameOut += StopAlarm;
+
+        _door.Entered += Trigger;
+        _door.CameOut += Stop;
     }
 
-    public void TriggerAlarm(Door door)
+    private void OnDisable()
+    {
+        _door.Entered -= Trigger;
+        _door.CameOut -= Stop;
+    }
+
+    public void Trigger(Door door)
     {
         ToggleLights(true);
 
-        if (_soundFadeOut != null)
-            StopCoroutine(_soundFadeOut);
+        if (_soundCoroutine != null)
+            StopCoroutine(_soundCoroutine);
 
-        _soundFadeIn = StartCoroutine(FadeInSound());
+        _soundCoroutine = StartCoroutine(FadeInSound());
     }
 
-    public void StopAlarm(Door door)
+    public void Stop(Door door)
     {
         ToggleLights(false);
 
-        if (_soundFadeIn != null)
-            StopCoroutine(_soundFadeIn);
+        if (_soundCoroutine != null)
+            StopCoroutine(_soundCoroutine);
 
-        _soundFadeOut = StartCoroutine(FadeOutSound());
+        _soundCoroutine = StartCoroutine(FadeOutSound());
     }
 
     private void ToggleLights(bool value)
-    {
-        var lightsAnim = _lights.GetComponent<Animator>();
-
-        if (_lights != null)
+    {       
+        if(_lights != null)
             _lights.enabled = value;
-        
-        if(lightsAnim != null)
-            lightsAnim.enabled = value;
+
+        if(_lightsAnimator != null)
+            _lightsAnimator.enabled = value;
     }
 
     private IEnumerator FadeInSound()
